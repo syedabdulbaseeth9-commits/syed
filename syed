@@ -1,0 +1,36 @@
+public class ThreadLifecycleDemo {
+    public static void main(String[] args) {
+        // 1. Create a thread that simulates a task (printing messages with a delay)
+        Thread taskThread = new Thread(() -> {
+            try {
+                System.out.println("[Child Thread] Task started...");
+                for (int i = 1; i <= 3; i++) {
+                    System.out.println("[Child Thread] Processing step " + i + "...");
+                    Thread.sleep(1000); // 1-second delay simulation
+                }
+                System.out.println("[Child Thread] Task completed.");
+            } catch (InterruptedException e) {
+                System.out.println("[Child Thread] Thread was interrupted.");
+            }
+                  });
+
+        
+        System.out.println("[Main Thread] Before start - Is thread alive? " + taskThread.isAlive());
+
+        taskThread.start();
+
+        System.out.println("[Main Thread] After start - Is thread alive? " + taskThread.isAlive());
+
+        try {
+            System.out.println("[Main Thread] Waiting for the child thread to finish...");
+            taskThread.join();
+        } catch (InterruptedException e) {
+            System.out.println("[Main Thread] Main thread interrupted.");
+        }
+
+        // 4. Print final status to demonstrate the sequence of execution
+        System.out.println("[Main Thread] After join - Is thread alive? " + taskThread.isAlive());
+        System.out.println("[Main Thread] Execution finished successfully.");
+    }
+}
+
